@@ -5,6 +5,16 @@
 
 
 function myReplace(str, before, after) {
+  
+  // if the first letter of 'before' is upper case, change the first letter
+  // of after to uppercase
+  if (before[0].toUpperCase() === before[0]) {
+    after = after.charAt(0).toUpperCase() + after.slice(1);
+  }
+  
+  // use replace to find before in the string and replace it with after
+  str = str.replace(before, after);
+  
   return str;
 }
 
