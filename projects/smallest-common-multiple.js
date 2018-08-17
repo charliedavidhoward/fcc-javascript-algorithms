@@ -8,6 +8,7 @@
 
 function smallestCommons(arr) {
 
+  // function to complete the greatest common divisor using Euclid algorithm and recursion
   var gcd = function(a, b) {
     if (b === 0) {
       return a;
@@ -16,31 +17,37 @@ function smallestCommons(arr) {
     }
   };
 
+  // return the lowest common mutiple of two numbers, calling gcd
   var lcm = function(a, b) {
     return a * b / gcd(a, b);
   };
 
+  // sort the array in numerial order
   arr = arr.sort(function(a, b) {
     return a - b;
   });
   
+  // create a range array for all values between the two values in array
   var range = [];
 
   for (var i = arr[0]; i <= arr[1]; i++) {
     range.push(i);
   };
 
+  // using the logic that the lcd of three numbers is lcd(a, lcd(b, c)),
+  // iterate through the numbers in the range, calling the lcd function
+  // against the cumulative result of the numbers already passed
   var i = 0;
   var result = 1;
 
   while (i < range.length) {
     result = lcm(result, range[i]);
     i++
-  }
+  };
 
   return result;
 
-}
+};
 
 
 smallestCommons([1,5]);
