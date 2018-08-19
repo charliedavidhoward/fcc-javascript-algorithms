@@ -16,6 +16,8 @@ If either argument isn't a valid number, return undefined.
 
 function addTogether() {
 
+  // function to check whether argument is a number
+  // return the number if it is a number, otherwise return undefined
   function isNumber(n) {
     if (typeof n != 'number') {
       return undefined;
@@ -24,6 +26,7 @@ function addTogether() {
     }
   };
 
+  // if there are two arguments, sum and return them if both are numbers
   if (arguments.length === 2) {
     var arg1 = isNumber(arguments[0]);
     var arg2 = isNumber(arguments[1]);
@@ -32,6 +35,8 @@ function addTogether() {
     } else {
       return arg1 + arg2;
     }
+    
+  // if there is one argument, return a function
   } else if (arguments.length === 1) {
     var arg1 = isNumber(arguments[0]);
     if (arg1 === undefined) {
@@ -45,6 +50,8 @@ function addTogether() {
         }
       }
     }
+    
+  // in any other circumstance, return undefined
   } else {
     return undefined;
   };
