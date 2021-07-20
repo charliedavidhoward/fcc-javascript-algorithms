@@ -10,18 +10,23 @@
 
 //We'll also pass strings with special symbols, such as 2A3*3a2, 2A3 3a2, and 2_A3*3#A2.
 
-
 function palindrome(str) {
 
-  let regex = /[A-Za-z]*/g
-  let working = str.replace(/[^A-Za-z]/g, '').match(regex)[0].toLowerCase();
+  let regex = /[A-Za-z0-9]*/g
+  let working = str.replace(/[^A-Za-z0-9]/g, '').match(regex)[0].toLowerCase();
 
+  let check = working.length - 1
+  for (let i = 0; i < check; i++) {
+      if (working[i] !== working[check]) {
+        return false
+      } else
+        check = check - 1;
+      }
 
-  console.log(working);
-
+  
   return true;
 }
 
 
 
-palindrome("eyefour");
+palindrome("1 eye for of 1 eye.");
