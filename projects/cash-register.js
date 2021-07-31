@@ -13,22 +13,37 @@
 
 function checkCashRegister(price, cash, cid) {
   
-  var change = cash - price;
-
-  // find total funds in cash drawer
-  let acc = 0;
-  for (let i = 0; i < cid.length; i++) {
-    acc += cid[i][1] * 100;
-  }
-  acc = acc / 100;
-
-  // if cash in drawer is less than change required, return
-  if (change > acc) {
-    return {status: "INSUFFICIENT_FUNDS", change: []};
+  // initialise variables
+  let change = cash - price;
+  let initialChange = change;
+  let statusReturn = {
+    status: '',
+    change: []
   };
+
+  // initialise array of currency values
+  let currencyValues = [
+    ["PENNY", 0.01],
+    ["NICKEL", 0.05],
+    ["DIME", 0.1],
+    ["QUARTER", 0.25],
+    ["ONE", 1],
+    ["FIVE", 5],
+    ["TEN", 10],
+    ["TWENTY", 20],
+    ["ONE HUNDRED", 100]
+  ];
+
+  // sum total cash in drawer
+  let cidTotal = 0;
+  for (let i = 0; i < cid.length; i++) {
+    cidTotal += cid[i][1];
+  }
+
+
 
 
 
 }
 
-checkCashRegister(19.5, 20, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]);
+checkCashRegister(19.5, 20, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 1], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]);
