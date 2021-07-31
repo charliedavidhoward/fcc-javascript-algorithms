@@ -23,22 +23,26 @@ function checkCashRegister(price, cash, cid) {
 
   // initialise array of currency values
   let currencyValues = [
-    ["PENNY", 0.01],
-    ["NICKEL", 0.05],
-    ["DIME", 0.1],
-    ["QUARTER", 0.25],
-    ["ONE", 1],
-    ["FIVE", 5],
-    ["TEN", 10],
+    ["ONE HUNDRED", 100],
     ["TWENTY", 20],
-    ["ONE HUNDRED", 100]
+    ["TEN", 10],
+    ["FIVE", 5],
+    ["ONE", 1],
+    ["QUARTER", 0.25],
+    ["DIME", 0.1],
+    ["NICKEL", 0.05],
+    ["PENNY", 0.01]
   ];
+
+  cid.reverse();
 
   // sum total cash in drawer
   let cidTotal = 0;
   for (let i = 0; i < cid.length; i++) {
     cidTotal += cid[i][1];
   }
+
+  let result = [...currencyValues];
 
 
 
