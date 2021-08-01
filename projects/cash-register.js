@@ -11,11 +11,13 @@
 //Otherwise, return {status: "OPEN", change: [...]}, with the change due in coins and bills, sorted in highest to lowest order, as the value of the change key.
 
 
-function checkCashRegister(price, cash, cid) {
+ffunction checkCashRegister(price, cash, cid) {
   
   // initialise variables
   let change = (cash - price) * 100;
   let initialChange = change;
+
+  // make a deep copy of the cid array, to check conditions later
   let cidOriginal = JSON.parse(JSON.stringify(cid));
 
 
@@ -32,8 +34,9 @@ function checkCashRegister(price, cash, cid) {
     ["PENNY", 1]
   ];
 
-
+  // reverse the cid array to match currencyValues
   cid.reverse();
+
 
   // convert cash in drawer values to cents
   for (let i = 0; i < cid.length; i++) {
@@ -46,6 +49,7 @@ function checkCashRegister(price, cash, cid) {
     cidTotal += cid[i][1];
   }
 
+  // initialise an array to track change due
   let changeArray = [
     ["ONE HUNDRED", 0],
     ["TWENTY", 0],
@@ -58,6 +62,7 @@ function checkCashRegister(price, cash, cid) {
     ["PENNY", 0]
   ];
 
+  // work through the cash in drawer, withdrawing cash and then moving to the next value
   for (let i = 0; i < cid.length; i++) {
     while (change >= currencyValues[i][1] && cid[i][1] > 0) {
       change -= currencyValues[i][1]
@@ -66,11 +71,13 @@ function checkCashRegister(price, cash, cid) {
     }
   }
 
+  // total the amount of change
   let changeTotal = 0;
   for (let i = 0; i < changeArray.length; i++) {
     changeTotal += changeArray[i][1];
   };
 
+  // manipulate the change array, stripping out zero values and converting from cents to dollars
   for (let i = 0; i < changeArray.length; i++) {
     if (changeArray[i][1] === 0) {
       changeArray.splice(i, 1);
@@ -79,21 +86,18 @@ function checkCashRegister(price, cash, cid) {
     changeArray[i][1] = (changeArray[i][1] / 100) };
   }
 
-  console.log(changeArray)
+  // if there is not enough change in the drawer, return
   if (changeTotal < change) {
-    console.log("t")
     return {status: "INSUFFICIENT_FUNDS", change: []}
   }
 
+  // if the amount of change matches the amount in the drawer, return
   if (changeTotal == cidTotal) {
     return {status: "CLOSED", change: cidOriginal};
   }
 
+  // else, keep the drawer open and return the changearray
   return {status: "OPEN", change: changeArray};
-
-
-
-
 
 
 }
