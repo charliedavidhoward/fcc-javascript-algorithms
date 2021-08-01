@@ -14,35 +14,83 @@
 function checkCashRegister(price, cash, cid) {
   
   // initialise variables
-  let change = cash - price;
+  let change = (cash - price) * 100;
   let initialChange = change;
-  let statusReturn = {
-    status: '',
-    change: []
-  };
+  let cidOriginal = JSON.parse(JSON.stringify(cid));
 
-  // initialise array of currency values
+
+  // initialise array of currency values in cents
   let currencyValues = [
-    ["ONE HUNDRED", 100],
-    ["TWENTY", 20],
-    ["TEN", 10],
-    ["FIVE", 5],
-    ["ONE", 1],
-    ["QUARTER", 0.25],
-    ["DIME", 0.1],
-    ["NICKEL", 0.05],
-    ["PENNY", 0.01]
+    ["ONE HUNDRED", 10000],
+    ["TWENTY", 2000],
+    ["TEN", 1000],
+    ["FIVE", 500],
+    ["ONE", 100],
+    ["QUARTER", 25],
+    ["DIME", 10],
+    ["NICKEL", 5],
+    ["PENNY", 1]
   ];
+
 
   cid.reverse();
 
-  // sum total cash in drawer
+  // convert cash in drawer values to cents
+  for (let i = 0; i < cid.length; i++) {
+    cid[i][1] = Math.round(cid[i][1] * 100);
+  }
+
+  //sum total cash in drawer
   let cidTotal = 0;
   for (let i = 0; i < cid.length; i++) {
     cidTotal += cid[i][1];
   }
 
-  let result = [...currencyValues];
+  let changeArray = [
+    ["ONE HUNDRED", 0],
+    ["TWENTY", 0],
+    ["TEN", 0],
+    ["FIVE", 0],
+    ["ONE", 0],
+    ["QUARTER", 0],
+    ["DIME", 0],
+    ["NICKEL", 0],
+    ["PENNY", 0]
+  ];
+
+  for (let i = 0; i < cid.length; i++) {
+    while (change >= currencyValues[i][1] && cid[i][1] > 0) {
+      change -= currencyValues[i][1]
+      cid[i][1] -= currencyValues[i][1];
+      changeArray[i][1] += currencyValues[i][1];
+    }
+  }
+
+  let changeTotal = 0;
+  for (let i = 0; i < changeArray.length; i++) {
+    changeTotal += changeArray[i][1];
+  };
+
+  for (let i = 0; i < changeArray.length; i++) {
+    if (changeArray[i][1] === 0) {
+      changeArray.splice(i, 1);
+      i--;
+    } else {
+    changeArray[i][1] = (changeArray[i][1] / 100) };
+  }
+
+  console.log(changeArray)
+  if (changeTotal < change) {
+    console.log("t")
+    return {status: "INSUFFICIENT_FUNDS", change: []}
+  }
+
+  if (changeTotal == cidTotal) {
+    return {status: "CLOSED", change: cidOriginal};
+  }
+
+  return {status: "OPEN", change: changeArray};
+
 
 
 
@@ -50,4 +98,4 @@ function checkCashRegister(price, cash, cid) {
 
 }
 
-checkCashRegister(19.5, 20, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 1], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]);
+checkCashRegister(3.26, 100, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]])
